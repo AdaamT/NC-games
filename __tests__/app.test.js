@@ -27,26 +27,26 @@ describe("api/categories", () => {
   });
 });
 
-describe("api/reviews/:review_id", () => {
+describe.only("api/reviews/:review_id", () => {
   describe("GET", () => {
-    test("should respond with corresponding review array object", () => {
+    test("should respond with corresponding review", () => {
       return request(app)
-        .get("/api/reviews/review_id")
+        .get("/api/reviews/2")
         .expect(200)
         .then(({ body }) => {
-          expect(Array.isArray(body.review)).toBe(true);
-          expect(body.reviews.length === 1).toBe(true);
-          body.reviews.forEach((review) => {
-            expect(review).toHaveProperty("review_id", expect.any(Number));
-            expect(review).toHaveProperty("title", expect.any(String));
-            expect(review).toHaveProperty("review_body", expect.any(String));
-            expect(review).toHaveProperty("designer", expect.any(String));
-            expect(review).toHaveProperty("review_img_url", expect.any(String));
-            expect(review).toHaveProperty("votes", expect.any(Number));
-            expect(review).toHaveProperty("category", expect.any(String));
-            expect(review).toHaveProperty("owner", expect.any(String));
-            expect(review).toHaveProperty("created_at", expect.any(Number));
-          });
+          const review = body.review;
+          const testReview = {
+            title: "Jenga",
+            designer: "Leslie Scott",
+            owner: "philippaclaire9",
+            review_img_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            review_body: "Fiddly fun for all the family",
+            category: "dexterity",
+            created_at: new Date(1610964101251),
+            votes: 5,
+          };
+          expect(testReview).toEqual(body.review);
         });
     });
   });

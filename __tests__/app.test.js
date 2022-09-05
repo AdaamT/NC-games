@@ -36,6 +36,7 @@ describe.only("api/reviews/:review_id", () => {
         .then(({ body }) => {
           const review = body.review;
           const testReview = {
+            review_id: 2,
             title: "Jenga",
             designer: "Leslie Scott",
             owner: "philippaclaire9",

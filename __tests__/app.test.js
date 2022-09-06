@@ -27,7 +27,51 @@ describe("api/categories", () => {
   });
 });
 
-describe("/api/users", () => {
+describe("api/reviews/:review_id", () => {
+  describe("GET", () => {
+    test("should respond with corresponding review", () => {
+      return request(app)
+        .get("/api/reviews/2")
+        .expect(200)
+        .then(({ body }) => {
+          const review = body.review;
+          const testReview = {
+            review_id: 2,
+            title: "Jenga",
+            designer: "Leslie Scott",
+            owner: "philippaclaire9",
+            review_img_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            review_body: "Fiddly fun for all the family",
+            category: "dexterity",
+            created_at: expect.any(String),
+            votes: 5,
+          };
+          expect(review).toEqual(testReview);
+        });
+    });
+  });
+  describe("ERRORs", () => {
+    test("400: bad request - when given an endpoint that does not exist", () => {
+      return request(app)
+        .get("/api/reviews/dogs")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad request");
+        });
+    });
+  });
+  test("404: not found - when given an Id which is out of range", () => {
+    return request(app)
+      .get("/api/reviews/99999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No review found for review_id: 99999");
+      });
+  });
+});
+
+describe.only("/api/users", () => {
   describe("GET", () => {
     test("should return an array of objects, with each object having a property of username, name, and avatar", () => {
       return request(app)

@@ -9,7 +9,7 @@ beforeEach(() => {
   return seed(testData);
 });
 
-describe.only("api/categories", () => {
+describe("api/categories", () => {
   describe("GET", () => {
     test("should return an array of category objects, each of which should have the following properties: slug, description ", () => {
       return request(app)
@@ -23,6 +23,17 @@ describe.only("api/categories", () => {
             expect(category).toHaveProperty("description");
           });
         });
+    });
+  });
+});
+
+describe("/api/users", () => {
+  describe("GET", () => {
+    test("should return an array of objects, with each object having a property of username, name, and avatar", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body }) => {});
     });
   });
 });

@@ -71,13 +71,21 @@ describe("api/reviews/:review_id", () => {
   });
 });
 
-describe.only("/api/users", () => {
+describe("/api/users", () => {
   describe("GET", () => {
     test("should return an array of objects, with each object having a property of username, name, and avatar", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
-        .then(({ body }) => {});
+        .then(({ body }) => {
+          expect(Array.isArray(body.users)).toBe(true);
+          expect(body.users.length > 0).toBe(true);
+          body.users.forEach((user) => {
+            expect(user).toHaveProperty("username");
+            expect(user).toHaveProperty("name");
+            expect(user).toHaveProperty("avatar_url");
+          });
+        });
     });
   });
 });

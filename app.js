@@ -1,6 +1,11 @@
 const express = require("express");
+
 const { getCategories } = require("./controllers/categories.controller");
+
 const { getReviewById } = require("./controllers/reviews.controller");
+
+const { getUsers } = require("./controllers/users.controller");
+
 const {
   handlePsqlErrors,
   handleServerErrors,

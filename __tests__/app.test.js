@@ -78,7 +78,6 @@ describe("/api/users", () => {
         .get("/api/users")
         .expect(200)
         .then(({ body }) => {
-          expect(Array.isArray(body.users)).toBe(true);
           expect(body.users.length > 0).toBe(true);
           body.users.forEach((user) => {
             expect(user).toHaveProperty("username");

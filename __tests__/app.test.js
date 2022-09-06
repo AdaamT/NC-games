@@ -51,14 +51,22 @@ describe("api/reviews/:review_id", () => {
         });
     });
   });
-  describe.only("ERRORs", () => {
+  describe("ERRORs", () => {
     test("400: bad request - when given an endpoint that does not exist", () => {
       return request(app)
         .get("/api/reviews/dogs")
-        .expect(404)
+        .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("Bad request");
         });
     });
+  });
+  test.only("404: not found - when given an Id which is out of range", () => {
+    return request(app)
+      .get("/api/reviews/99999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("not found");
+      });
   });
 });

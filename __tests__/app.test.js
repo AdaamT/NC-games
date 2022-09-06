@@ -44,10 +44,10 @@ describe.only("api/reviews/:review_id", () => {
               "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
             review_body: "Fiddly fun for all the family",
             category: "dexterity",
-            created_at: new Date(1610964101251),
+            created_at: expect.any(String),
             votes: 5,
           };
-          expect(testReview).toEqual(body.review);
+          expect(review).toEqual(testReview);
         });
     });
   });

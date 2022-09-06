@@ -1,8 +1,13 @@
 const db = require("../db/connection");
 const format = require("pg-format");
 
-exports.selectReviews = () => {
-  return db.query(`SELECT * FROM reviews`).then((results) => {
-    return results.rows;
+exports.selectReviewById = (reviewId) => {
+  const formatQuery = format(
+    `SELECT * FROM reviews
+  WHERE review_id = %L;`,
+    [reviewId]
+  );
+  return db.query(formatQuery).then((results) => {
+    return results.rows[0];
   });
 };

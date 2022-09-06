@@ -27,7 +27,7 @@ describe("api/categories", () => {
   });
 });
 
-describe.only("api/reviews/:review_id", () => {
+describe("api/reviews/:review_id", () => {
   describe("GET", () => {
     test("should respond with corresponding review", () => {
       return request(app)

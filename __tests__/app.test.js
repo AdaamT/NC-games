@@ -61,12 +61,12 @@ describe("api/reviews/:review_id", () => {
         });
     });
   });
-  test.only("404: not found - when given an Id which is out of range", () => {
+  test("404: not found - when given an Id which is out of range", () => {
     return request(app)
       .get("/api/reviews/99999")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("not found");
+        expect(body.msg).toBe("No review found for review_id: 99999");
       });
   });
 });

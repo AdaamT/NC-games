@@ -8,9 +8,13 @@ exports.selectReviewById = (reviewId) => {
     [reviewId]
   );
   return db.query(formatQuery).then((results) => {
-    if (results.rows.length === 0) {
-      return Promise.reject({ status: 404, msg: "Bad request" });
+    const review = results.rows[0];
+    if (!review) {
+      return Promise.reject({
+        status: 404,
+        msg: `No review found for review_id: ${reviewId}`,
+      });
     }
-    return results.rows[0];
+    return review;
   });
 };

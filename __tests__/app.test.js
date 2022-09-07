@@ -71,11 +71,13 @@ describe("api/reviews/:review_id", () => {
   });
   describe.only("PATCH", () => {
     test("Using the request body, should update the review object vote property ", () => {
+      const patchObj = { inc_votes: 1 };
       return request(app)
-        .get("'/api/reviews/2")
+        .patch("/api/reviews/2")
+        .send(patchObj)
         .expect(200)
         .then(({ body }) => {
-          const voteCount = body.votes;
+          const { updatedReview } = body;
           const testReview = {
             review_id: 2,
             title: "Jenga",
@@ -88,7 +90,8 @@ describe("api/reviews/:review_id", () => {
             created_at: expect.any(String),
             votes: 6,
           };
-          expect(voteCount).toEqual(testReview);
+          expect(updatedReview).toEqual(testReview);
+          expect(updatedReview.votes).toBe(6);
         });
     });
   });

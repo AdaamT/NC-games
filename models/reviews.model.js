@@ -19,8 +19,13 @@ exports.selectReviewById = (reviewId) => {
   });
 };
 
-exports.updateVoteCount = () => {
-  return db.query(`SELECT * FROM reviews`).then((results) => {
-    return results.rows[0];
-  });
+exports.updateVoteCount = (reviewId, voteCount) => {
+  return db
+    .query(
+      `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`,
+      [voteCount, reviewId]
+    )
+    .then((results) => {
+      return results.rows[0];
+    });
 };

@@ -15,10 +15,11 @@ exports.getReviewById = (req, res, next) => {
 };
 
 exports.updateReview = (req, res, next) => {
-  console.log(req.params);
-  updateVoteCount()
-    .then(() => {
-      res.status(200).send({ review });
+  const { review_id } = req.params;
+  const { inc_votes } = req.body;
+  updateVoteCount(review_id, inc_votes)
+    .then((updatedReview) => {
+      res.status(200).send({ updatedReview });
     })
     .catch((err) => {
       next(err);

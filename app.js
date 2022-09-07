@@ -2,7 +2,10 @@ const express = require("express");
 
 const { getCategories } = require("./controllers/categories.controller");
 
-const { getReviewById } = require("./controllers/reviews.controller");
+const {
+  getReviewById,
+  updateReview,
+} = require("./controllers/reviews.controller");
 
 const { getUsers } = require("./controllers/users.controller");
 
@@ -17,6 +20,7 @@ const app = express();
 app.get("/api/categories", getCategories);
 
 app.get("/api/reviews/:review_id", getReviewById);
+app.patch("/api/reviews/review_id", updateReview);
 
 app.get("/api/users", getUsers);
 

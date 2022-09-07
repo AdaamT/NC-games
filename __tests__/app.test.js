@@ -50,26 +50,26 @@ describe("api/reviews/:review_id", () => {
           expect(review).toEqual(testReview);
         });
     });
-    describe("ERRORs", () => {
-      test("400: bad request - when given an endpoint that does not exist", () => {
-        return request(app)
-          .get("/api/reviews/dogs")
-          .expect(400)
-          .then(({ body }) => {
-            expect(body.msg).toBe("Bad request");
-          });
-      });
-      test("404: not found - when given an Id which is out of range", () => {
-        return request(app)
-          .get("/api/reviews/99999")
-          .expect(404)
-          .then(({ body }) => {
-            expect(body.msg).toBe("No review found for review_id: 99999");
-          });
-      });
+  });
+  describe("GET ERRORs", () => {
+    test("400: bad request - when given an endpoint that does not exist", () => {
+      return request(app)
+        .get("/api/reviews/dogs")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad request");
+        });
+    });
+    test("404: not found - when given an Id which is out of range", () => {
+      return request(app)
+        .get("/api/reviews/99999")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("No review found for review_id: 99999");
+        });
     });
   });
-  describe.only("PATCH", () => {
+  describe("PATCH", () => {
     test("Using the request body, should update the review object vote property ", () => {
       const patchObj = { inc_votes: 1 };
       return request(app)
@@ -94,23 +94,33 @@ describe("api/reviews/:review_id", () => {
           expect(updatedReview.votes).toBe(6);
         });
     });
-    describe("ERRORS", () => {
-      test("404: not found - when given an Id which is out of range", () => {
-        return request(app)
-          .get("/api/reviews/99999")
-          .expect(404)
-          .then(({ body }) => {
-            expect(body.msg).toBe("No review found for review_id: 99999");
-          });
-      });
-      test("400: bad request - when given an endpoint that does not exist", () => {
-        return request(app)
-          .get("/api/reviews/dogs")
-          .expect(400)
-          .then(({ body }) => {
-            expect(body.msg).toBe("Bad request");
-          });
-      });
+  });
+  describe("PATCH ERRORS", () => {
+    test.only("404: not found - when given an Id which is out of range", () => {
+      return request(app)
+        .patch("/api/reviews/99999")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("No review found for review_id: 99999");
+        });
+    });
+    test.only("400: bad request - when given a malformed body/missing required fields ", () => {
+      const patchObj = {};
+      return request(app)
+        .patch("/api/reviews/2")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad request");
+        });
+    });
+    test.only("400: bad request - when using wrong data type ", () => {
+      const patchObj = { inc_votes: "banana" };
+      return request(app)
+        .patch("/api/reviews/2")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad request");
+        });
     });
   });
 });

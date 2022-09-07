@@ -26,6 +26,13 @@ exports.updateVoteCount = (reviewId, voteCount) => {
       [voteCount, reviewId]
     )
     .then((results) => {
-      return results.rows[0];
+      const review = results.rows[0];
+      if (!review) {
+        return Promise.reject({
+          status: 404,
+          msg: `No review found for review_id: ${reviewId}`,
+        });
+      }
+      return review;
     });
 };

@@ -50,23 +50,23 @@ describe("api/reviews/:review_id", () => {
           expect(review).toEqual(testReview);
         });
     });
-  });
-  describe("ERRORs", () => {
-    test("400: bad request - when given an endpoint that does not exist", () => {
-      return request(app)
-        .get("/api/reviews/dogs")
-        .expect(400)
-        .then(({ body }) => {
-          expect(body.msg).toBe("Bad request");
-        });
-    });
-    test("404: not found - when given an Id which is out of range", () => {
-      return request(app)
-        .get("/api/reviews/99999")
-        .expect(404)
-        .then(({ body }) => {
-          expect(body.msg).toBe("No review found for review_id: 99999");
-        });
+    describe("ERRORs", () => {
+      test("400: bad request - when given an endpoint that does not exist", () => {
+        return request(app)
+          .get("/api/reviews/dogs")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Bad request");
+          });
+      });
+      test("404: not found - when given an Id which is out of range", () => {
+        return request(app)
+          .get("/api/reviews/99999")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("No review found for review_id: 99999");
+          });
+      });
     });
   });
   describe.only("PATCH", () => {
@@ -93,6 +93,24 @@ describe("api/reviews/:review_id", () => {
           expect(updatedReview).toEqual(testReview);
           expect(updatedReview.votes).toBe(6);
         });
+    });
+    describe("ERRORS", () => {
+      test("404: not found - when given an Id which is out of range", () => {
+        return request(app)
+          .get("/api/reviews/99999")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("No review found for review_id: 99999");
+          });
+      });
+      test("400: bad request - when given an endpoint that does not exist", () => {
+        return request(app)
+          .get("/api/reviews/dogs")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Bad request");
+          });
+      });
     });
   });
 });

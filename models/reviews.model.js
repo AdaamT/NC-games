@@ -18,3 +18,21 @@ exports.selectReviewById = (reviewId) => {
     return review;
   });
 };
+
+exports.updateVoteCount = (reviewId, voteCount) => {
+  return db
+    .query(
+      `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`,
+      [voteCount, reviewId]
+    )
+    .then((results) => {
+      const review = results.rows[0];
+      if (!review) {
+        return Promise.reject({
+          status: 404,
+          msg: `No review found for review_id: ${reviewId}`,
+        });
+      }
+      return review;
+    });
+};

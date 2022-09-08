@@ -70,7 +70,7 @@ describe("api/reviews/:review_id", () => {
     });
   });
   describe("PATCH", () => {
-    test("Using the request body, should update the review object vote property ", () => {
+    test("Using the request body, should update the review object vote property and return the updated review object", () => {
       const patchObj = { inc_votes: 1 };
       return request(app)
         .patch("/api/reviews/2")

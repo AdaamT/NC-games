@@ -96,7 +96,7 @@ describe("api/reviews/:review_id", () => {
     });
   });
   describe("PATCH ERRORS", () => {
-    test.only("404: not found - when given an Id which is out of range", () => {
+    test("404: not found - when given an Id which is out of range", () => {
       return request(app)
         .patch("/api/reviews/99999")
         .expect(404)
@@ -104,19 +104,21 @@ describe("api/reviews/:review_id", () => {
           expect(body.msg).toBe("No review found for review_id: 99999");
         });
     });
-    test.only("400: bad request - when given a malformed body/missing required fields ", () => {
+    test("400: bad request - when given a malformed body/missing required fields ", () => {
       const patchObj = {};
       return request(app)
         .patch("/api/reviews/2")
+        .send(patchObj)
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("Bad request");
         });
     });
-    test.only("400: bad request - when using wrong data type ", () => {
+    test("400: bad request - when using wrong data type ", () => {
       const patchObj = { inc_votes: "banana" };
       return request(app)
         .patch("/api/reviews/2")
+        .send(patchObj)
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("Bad request");

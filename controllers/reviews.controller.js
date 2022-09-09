@@ -6,7 +6,6 @@ const {
 
 exports.getReviews = (req, res, next) => {
   const { category } = req.query;
-  console.log(category);
   selectReviews(category)
     .then((reviews) => {
       res.status(200).send({ reviews });

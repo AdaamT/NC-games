@@ -12,9 +12,20 @@ exports.selectReviews = (category) => {
   }
   formatStr += ` GROUP BY reviews.review_id ORDER BY created_at DESC`;
 
-  return db.query(formatStr, queryValue).then((results) => {
-    return results.rows;
-  });
+  return db
+    .query(`SELECT * FROM categories`)
+    .then(({ rows }) => {
+      const allCategories = rows.map((category) => {
+        return category.slug;
+      });
+      if (!allCategories.includes(category)) {
+        return Promise.reject({ status: 404, msg: `${category} not found` });
+      }
+      return db.query(formatStr, queryValue);
+    })
+    .then((results) => {
+      return results.rows;
+    });
 };
 
 exports.selectReviewById = (reviewId) => {

@@ -74,9 +74,9 @@ describe("api/reviews", () => {
           });
         });
     });
-    test.only("200 returns an empty array when query exists but has no reviews", () => {
+    test.only("200: returns an empty array when the query exists but has no reviews", () => {
       return request(app)
-        .get("/api/reviews?category=children's-games")
+        .get("/api/reviews?category=children's games")
         .expect(200)
         .then(({ body }) => {
           expect(body.reviews).toEqual([]);
@@ -84,12 +84,12 @@ describe("api/reviews", () => {
     });
   });
   describe("ERRORS", () => {
-    test("404 returns not found when there is a category with no reviews", () => {
+    test.only("404: returns a message when there is a category which does not exist", () => {
       return request(app)
-        .get("/api/reviews?category=children's-games")
-        .expect(200)
+        .get("/api/reviews?category=banana")
+        .expect(404)
         .then(({ body }) => {
-          expect(body.reviews).toEqual([]);
+          expect(body.msg).toBe("banana not found");
         });
     });
   });

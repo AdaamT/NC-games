@@ -27,6 +27,30 @@ describe("api/categories", () => {
   });
 });
 
+describe.only("api/reviews", () => {
+  describe("GET", () => {
+    test("should respond with an array of objects with each object having a property of: owner, title, review_id, category, review_img_url, created_at, votes, designer, comment count", () => {
+      return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .send(({ body }) => {
+          expect(body.reviews.length > 0).toBe(true);
+          body.reviews.forEach((review) => {
+            expect(review).toHaveProperty("owner");
+            expect(review).toHaveProperty("title");
+            expect(review).toHaveProperty("review_id");
+            expect(review).toHaveProperty("category");
+            expect(review).toHaveProperty("review_img_url");
+            expect(review).toHaveProperty("created_at");
+            expect(review).toHaveProperty("votes");
+            expect(review).toHaveProperty("designer");
+            expect(review).toHaveProperty("comment_count");
+          });
+        });
+    });
+  });
+});
+
 describe("api/reviews/:review_id", () => {
   describe("GET", () => {
     test("should respond with corresponding review", () => {

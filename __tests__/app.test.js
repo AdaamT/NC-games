@@ -27,13 +27,13 @@ describe("api/categories", () => {
   });
 });
 
-describe.only("api/reviews", () => {
+describe("api/reviews", () => {
   describe("GET", () => {
-    test("should respond with an array of objects with each object having a property of: owner, title, review_id, category, review_img_url, created_at, votes, designer, comment count", () => {
+    test("should respond with an array of objects with each object having a property of: owner, title, review_id, category, review_img_url, created_at, votes, designer, comment count sorted by date in DESC order", () => {
       return request(app)
         .get("/api/reviews")
         .expect(200)
-        .send(({ body }) => {
+        .then(({ body }) => {
           expect(body.reviews.length > 0).toBe(true);
           body.reviews.forEach((review) => {
             expect(review).toHaveProperty("owner");

@@ -1,10 +1,14 @@
 const db = require("../db/connection");
 const format = require("pg-format");
 
-exports.selectReview = () => {
-  return db.query(`SELECT * FROM reviews`).then((results) => {
-    return results.rows;
-  });
+exports.selectReviews = () => {
+  return db
+    .query(
+      `SELECT reviews. *, COUNT(comments) ::INT AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id GROUP BY reviews.review_id ORDER BY created_at DESC`
+    )
+    .then((results) => {
+      return results.rows;
+    });
 };
 
 exports.selectReviewById = (reviewId) => {

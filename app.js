@@ -25,6 +25,10 @@ app.patch("/api/reviews/:review_id", updateReview);
 
 app.get("/api/users", getUsers);
 
+app.all("/*", (req, res) => {
+  res.status(404).send({ msg: "Path not found" });
+});
+
 app.use(handleCustomErrors);
 app.use(handlePsqlErrors);
 app.use(handleServerErrors);

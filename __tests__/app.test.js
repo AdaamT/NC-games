@@ -27,6 +27,74 @@ describe("api/categories", () => {
   });
 });
 
+describe("api/reviews", () => {
+  describe("GET", () => {
+    test("should respond with an array of objects with each object having a property of: owner, title, review_id, category, review_img_url, created_at, votes, designer, comment count", () => {
+      return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.reviews.length > 0).toBe(true);
+          body.reviews.forEach((review) => {
+            expect(review).toHaveProperty("owner");
+            expect(review).toHaveProperty("title");
+            expect(review).toHaveProperty("review_id");
+            expect(review).toHaveProperty("category");
+            expect(review).toHaveProperty("review_img_url");
+            expect(review).toHaveProperty("created_at");
+            expect(review).toHaveProperty("votes");
+            expect(review).toHaveProperty("designer");
+            expect(review).toHaveProperty("comment_count");
+          });
+        });
+    });
+    test("should respond with an array of objects sorted by date in DESC order", () => {
+      return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .then(({ body }) => {
+          return request(app)
+            .get("/api/reviews")
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.reviews).toBeSortedBy("created_at", {
+                descending: true,
+              });
+            });
+        });
+    });
+    test("should return all reviews by the category query", () => {
+      return request(app)
+        .get("/api/reviews?category=dexterity")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.reviews.length > 0).toBe(true);
+          body.reviews.forEach((review) => {
+            expect(review).toHaveProperty("category", "dexterity");
+          });
+        });
+    });
+    test("200: returns an empty array when the query exists but has no reviews", () => {
+      return request(app)
+        .get("/api/reviews?category=children's games")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.reviews).toEqual([]);
+        });
+    });
+  });
+  describe("ERRORS", () => {
+    test("404: returns a message when there is a category which does not exist", () => {
+      return request(app)
+        .get("/api/reviews?category=banana")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("banana not found");
+        });
+    });
+  });
+});
+
 describe("api/reviews/:review_id", () => {
   describe("GET", () => {
     test("should respond with corresponding review", () => {

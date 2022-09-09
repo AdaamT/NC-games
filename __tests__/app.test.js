@@ -90,7 +90,7 @@ describe("api/reviews/:review_id", () => {
             category: "dexterity",
             created_at: expect.any(String),
             votes: 5,
-            comment_count: expect.any(Number),
+            comment_count: 3,
           };
           expect(review).toEqual(testReview);
         });
@@ -112,7 +112,7 @@ describe("api/reviews/:review_id", () => {
             category: "euro game",
             created_at: expect.any(String),
             votes: 1,
-            comment_count: expect.any(Number),
+            comment_count: 0,
           };
           expect(review).toEqual(testReview);
         });

@@ -2,6 +2,7 @@ const {
   selectReviews,
   selectReviewById,
   updateVoteCount,
+  fetchReviewById,
 } = require("../models/reviews.model");
 
 exports.getReviews = (req, res, next) => {

@@ -37,3 +37,16 @@ exports.updateReview = (req, res, next) => {
       next(err);
     });
 };
+
+exports.getCommentsById = (req, res, next) => {
+  fetchReviewById(req.params.review_id)
+    .then(() => {
+      return selectCommentsById(req.params.review_id);
+    })
+    .then((comments) => {
+      res.status(200).send({ comments });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};

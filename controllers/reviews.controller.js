@@ -2,7 +2,7 @@ const {
   selectReviews,
   selectReviewById,
   updateVoteCount,
-  fetchReviewById,
+  selectReviewById,
 } = require("../models/reviews.model");
 
 exports.getReviews = (req, res, next) => {
@@ -40,7 +40,7 @@ exports.updateReview = (req, res, next) => {
 };
 
 exports.getCommentsById = (req, res, next) => {
-  fetchReviewById(req.params.review_id)
+  selectReviewById(req.params.review_id)
     .then(() => {
       return selectCommentsById(req.params.review_id);
     })

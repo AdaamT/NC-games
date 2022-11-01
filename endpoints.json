@@ -4,7 +4,6 @@
   },
   "GET /api/categories": {
     "description": "serves an array of all categories",
-    "queries": [],
     "exampleResponse": {
       "categories": [
         {
@@ -14,9 +13,29 @@
       ]
     }
   },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "mallionaire",
+          "name": "haz",
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+        }
+      ]
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes comment at given comment ID returning just a 204 status",
+    "exampleResponse": {}
+  },
   "GET /api/reviews": {
     "description": "serves an array of all reviews",
-    "queries": ["category", "sort_by", "order"],
+    "queries": {
+      "category": "a existing category to filter results by",
+      "sort_by": "a column name to sort by. defaults to date",
+      "order": "whether it is ascending order or descending. defaults to descending"
+    },
     "exampleResponse": {
       "reviews": [
         {
@@ -26,7 +45,82 @@
           "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
           "category": "hidden-roles",
           "created_at": 1610964101251,
-          "votes": 5
+          "votes": 5,
+          "comment_count": 1
+        }
+      ]
+    }
+  },
+  "GET /api/reviews/:review_id": {
+    "description": "serves a single review of the given review_id",
+    "exampleResponse": {
+      "review": [
+        {
+          "title": "Agricola",
+          "designer": "Uwe Rosenberg",
+          "owner": "mallionaire",
+          "review_img_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          "review_body": "Farmyard fun!",
+          "category": "euro game",
+          "created_at": 1610964020514,
+          "votes": 1,
+          "comment_count": 1
+        }
+      ]
+    }
+  },
+  "PATCH /api/reviews/:review_id": {
+    "description": "updates a single review of the given review_id",
+    "request body guide": {
+      "format": "an object in the form { inc_votes: newVote }.",
+      "examples": "{ inc_votes : 1 } would increment the current review's vote property by 1. { inc_votes : -100 } would decrement the current review's vote property by 100"
+    },
+    "exampleResponse": {
+      "updatedReview": [
+        {
+          "title": "Agricola",
+          "designer": "Uwe Rosenberg",
+          "owner": "mallionaire",
+          "review_img_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          "review_body": "Farmyard fun!",
+          "category": "euro game",
+          "created_at": 1610964020514,
+          "votes": 99,
+          "comment_count": 1
+        }
+      ]
+    }
+  },
+  "GET /api/reviews/:review_id/comments": {
+    "description": "serves as an array of objects all comments of the given review_id",
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 1,
+          "votes": 16,
+          "created_at": 1511354613389,
+          "author": "bainesface",
+          "body": "I loved this game too!",
+          "review_id": 2
+        }
+      ]
+    }
+  },
+  "POST /api/reviews/:review_id/comments": {
+    "description": "serves as an array of objects all comments of the given review_id",
+    "request body guide": {
+      "format": "an object in the form { username: string, body: string }.",
+      "examples": "{ username: 'philippaclaire9', body: 'This is a brand new comment for review ID 3' }"
+    },
+    "exampleResponse": {
+      "newComment": [
+        {
+          "comment_id": 35,
+          "votes": 12,
+          "created_at": 1511354613389,
+          "author": "philippaclaire9",
+          "body": "This is a brand new comment for review ID 3",
+          "review_id": 3
         }
       ]
     }

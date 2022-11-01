@@ -83,3 +83,21 @@ exports.selectCommentsById = (review_id) => {
       return rows;
     });
 };
+
+exports.insertCommentById = (id, comment) => {
+  const { username, body } = comment;
+  if (username === undefined) {
+    return Promise.reject({ status: 400, message: "Username required" });
+  }
+  if (body === undefined) {
+    return Promise.reject({ status: 400, message: "Body required" });
+  }
+  return db
+    .query(
+      `INSERT INTO comments (body, review_id, author) values ($1, $2, $3) RETURNING *`,
+      [body, id, username]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+};

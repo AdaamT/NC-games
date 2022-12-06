@@ -1,5 +1,7 @@
 const express = require("express");
 
+const cors = require("cors");
+
 const { getCategories } = require("./controllers/categories.controller");
 
 const {

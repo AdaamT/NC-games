@@ -23,6 +23,7 @@ const {
 } = require("./errors/index.js");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.get("/api", getAPI);

@@ -5,7 +5,7 @@
 This project is an API for a boardgames review website. It was made as a backend portfolio piece as part of the Northcoders Coding Bootcamp.
 
 The hosted version can be found here:
-https://nc-games-adamt.herokuapp.com/api
+https://ncgames-adamtai.cyclic.app/api
 
 <br>
 
